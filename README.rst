@@ -77,6 +77,9 @@ TODO
 * Consolidate database, account, and secrets into a single configuration
   file.
 
+* Figure out how to use the OAuth 2.0 refresh token so we don't have to
+  keep getting new tokens over and over again.
+
 * Currently known to work with a Charge HR:  Update code to handle other
   trackers?
 
