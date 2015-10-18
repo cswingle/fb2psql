@@ -46,14 +46,15 @@ Install the Python and R libraries:
    > install.packages(c('fitbitScraper', 'dplyr', 'RPostgreSQL', 'lubridate'))
 
 Copy your Client (Consumer) Key and OAuth 2.0 Client ID into the Python
-secrets file, ``fitbit_api_secrets.conf``, and populate the database
-connection variables.
+secrets file, ``python/fitbit_api_secrets.conf``, and populate the
+database connection variables.
 
-Fill in ``HOST``, ``DBNAME``, ``PORT``, ``DBUSER``, ``FITBIT_EMAIL``,
-``FITBIT_PASSWORD``, and ``LOCAL_TZ`` variables in ``r/get_fitbit_data.r``.
+Fill in the database settings ``HOST``, ``DBNAME``, ``PORT``,
+``DBUSER``, ``LOCAL_TZ``, and your FitBit account email and password
+``FITBIT_EMAIL``, ``FITBIT_PASSWORD`` in ``r/get_fitbit_data.r``.
 
-Fill in ``HOST``, ``DBNAME``, and ``PORT`` in
-``get_and_insert_fitbit.sh``.
+Fill in database connection variables ``HOST``, ``DBNAME``, and ``PORT``
+in ``get_and_insert_fitbit.sh``.
 
 Usage
 -----
@@ -73,7 +74,10 @@ TODO
   yesterday's data, unlike the Python script which accepts the date to
   be downloaded as an argument.
 
+* Consolidate database, account, and secrets into a single configuration
+  file.
+
 * Currently known to work with a Charge HR:  Update code to handle other
-  trackers.
+  trackers?
 
 .. vim:ft=rst:fenc=utf-8:tw=72:ts=3:sw=3:sts=3
