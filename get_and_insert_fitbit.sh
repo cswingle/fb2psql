@@ -36,3 +36,5 @@ psql -h $HOST -d $DBNAME -p $PORT \
     -c "REFRESH MATERIALIZED VIEW sleep_summary"
 psql -h $HOST -d $DBNAME -p $PORT \
     -c "REFRESH MATERIALIZED VIEW daily_summary"
+psql -h $HOST -d $DBNAME -p $PORT \
+    -c "REFRESH MATERIALIZED VIEW daily_summary_activity_filter"
