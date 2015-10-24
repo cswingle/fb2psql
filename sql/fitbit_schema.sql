@@ -238,3 +238,43 @@ CREATE MATERIALIZED VIEW daily_summary AS
           GROUP BY daily.dte) dtes
   ORDER BY dtes.dte
   WITH NO DATA;
+
+CREATE MATERIALIZED VIEW daily_summary_activity_filter AS
+ SELECT
+        CASE
+            WHEN ((to_char((l.dte)::timestamp with time zone, 'D'::text))::integer = 5) THEN 'R'::text
+            ELSE "substring"(to_char((l.dte)::timestamp with time zone, 'DAY'::text), 1, 1)
+        END AS dow,
+    l.dte,
+    l.avg_hr,
+    a.all_avg_hr AS all_hr,
+    l.steps,
+    a.all_steps,
+    l.floors,
+    a.all_floors,
+    l.miles,
+    a.all_miles,
+    daily_summary.light_min,
+    daily_summary.fair_min,
+    daily_summary.active_min,
+    daily_summary.weight_lb,
+    daily_summary.sleep_hhmm
+   FROM ((( SELECT date(intraday_summary.dt) AS dte,
+            round(avg(intraday_summary.hr), 1) AS avg_hr,
+            sum(intraday_summary.steps) AS steps,
+            sum(intraday_summary.floors) AS floors,
+            sum(intraday_summary.miles) AS miles
+           FROM intraday_summary
+          WHERE ((intraday_summary.activity IS NULL) OR (intraday_summary.activity = 'Hike'::text))
+          GROUP BY date(intraday_summary.dt)) l
+     JOIN ( SELECT date(intraday_summary.dt) AS dte,
+            round(avg(intraday_summary.hr), 1) AS all_avg_hr,
+            sum(intraday_summary.steps) AS all_steps,
+            sum(intraday_summary.floors) AS all_floors,
+            sum(intraday_summary.miles) AS all_miles
+           FROM intraday_summary
+          GROUP BY date(intraday_summary.dt)) a USING (dte))
+     JOIN daily_summary USING (dte))
+  WHERE (l.dte > '2015-10-05'::date)
+  ORDER BY l.dte
+  WITH NO DATA;
